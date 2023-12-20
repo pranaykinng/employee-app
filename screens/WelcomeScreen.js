@@ -1,38 +1,61 @@
-import React, { useState } from 'react';
-import { View,Text,StyleSheet ,Button} from 'react-native';
-//const [employees,hasEmployees]=useState(false);
-function WelcomeScreen(){
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import {
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  Text,
+} from 'react-native';
+function AddEmployeeButton() {
+  const navigation = useNavigation();
 
-    return(
-        <View style={styles.container}>
-        <Text style={styles.title}>Employee App</Text>
-        <Button 
-        title="Add Employee"
-        style={styles.button}/>
-        </View>
-    )
+  const handleNavigateToAddEmployee = () => {
+    navigation.navigate('AddEmployee');
+  };
 
-
+  return (
+    <TouchableHighlight
+        style={styles.buttonStyle}
+        underlayColor="#eee"
+        onPress={handleNavigateToAddEmployee}>
+        <Text style={{color: '#010802', fontSize: 22}}>Add Employee</Text>
+      </TouchableHighlight>
+  );
 }
 
-const styles=StyleSheet.create({
-    container:{
-        flex :1,
-        justifyContent: 'center',
-        alignItems:'center'},
-    title:{
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 20,
-    },
-    button:{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '80%',
-        padding: 10,
-        borderRadius: 5,
-    }
+function WelcomeScreen({navigation}) {
+  
+  return (
+    <View style={styles.container}>
+    <AddEmployeeButton />
+    </View>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#25631b',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+  },
+  buttonStyle: {
+    height: 60,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#053008',
+    color: '#fff',
+  },
 });
 
 export default WelcomeScreen;
