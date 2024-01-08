@@ -11,6 +11,7 @@ function App(){
     <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown:false}}/>
     <Stack.Screen name="EmployeeList" component={EmployeeListScreen} options={{headerShown:false}}/>
     <Stack.Screen name="AddEmployee" component={AddEmployee} options={{headerShown:false}}/>
+    
     </Stack.Navigator>
     </NavigationContainer>
     );

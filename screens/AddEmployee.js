@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -7,51 +6,24 @@ import {
   TextInput,
   TouchableHighlight,
 } from 'react-native';
-function AddEmployee({navigation}) {
+
+function AddEmployee(props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [jobTitle, setJobTitle] = useState('');
   const [salary, setSalary] = useState('');
 
-  const handleSubmit = async () => {
-    const employeeData = {
-      firstName,
-      lastName,
-      email,
-      jobTitle,
-      salary,
-    };
-
-    try {
-      await AsyncStorage.setItem('employees', JSON.stringify([employeeData]));
-      console.log('Employee saved successfully');
-    } catch (error) {
-      console.error('Error saving employee:', error);
-    }
-  };
-
-  const _handleInputChange = (type, text) => {
-    switch (type) {
-      case 'firstName':
-        setFirstName(text);
-        break;
-      case 'lastName':
-        setLastName(text);
-        break;
-      case 'email':
-        setEmail(text);
-        break;
-      case 'jobTitle':
-        setJobTitle(text);
-        break;
-      case 'salary':
-        setSalary(text);
-        break;
-
-      default:
-        console.error(`Unknown input type: ${type}`);
-    }
+  // const schema = Joi.object({
+  //   firstName: Joi.string().required().min(3),
+  //   lastName: Joi.string().required().min(3),
+  //   email: Joi.string().email().required(),
+  //   jobTitle: Joi.string().required().min(5),
+  //   salary: Joi.number().required().positive(),
+  // });
+  const validateSubmit  = () => {
+    const data = { firstName, lastName, email, jobTitle, salary };
+    props.navigation.navigate("EmployeeList", data);
   };
   return (
     <View style={styles.container}>
@@ -59,38 +31,35 @@ function AddEmployee({navigation}) {
       <TextInput
         style={styles.input}
         placeholder="First Name"
-        onChangeText={text => _handleInputChange('firstName', text)}
-        value={firstName}
+        onChangeText={text => setFirstName(text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Last Name"
-        onChangeText={text => _handleInputChange('lastName', text)}
-        value={lastName}
+        onChangeText={text => setLastName(text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
-        onChangeText={text => _handleInputChange('email', text)}
-        value={email}
+        onChangeText={text => setEmail(text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Job Title"
-        onChangeText={text => _handleInputChange('jobTitle', text)}
-        value={jobTitle}
+        onChangeText={text => setJobTitle(text)}
+        
       />
       <TextInput
         style={styles.input}
         placeholder="Salary"
-        onChangeText={text => _handleInputChange('jobTitle', text)}
-        value={salary}
+        onChangeText={text => setSalary(text)}
+      
       />
 
       <TouchableHighlight
         style={styles.buttonStyle}
         underlayColor="#eee"
-        onPress={handleSubmit}>
+        onPress={ validateSubmit}>
         <Text style={{color: '#010802', fontSize: 22}}>Submit</Text>
       </TouchableHighlight>
     </View>
