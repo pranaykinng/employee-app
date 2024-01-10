@@ -6,54 +6,75 @@ import {
   TextInput,
   TouchableHighlight,
 } from 'react-native';
+import * as Yup from 'yup';
 
 function AddEmployee(props) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [jobTitle, setJobTitle] = useState('');
-  const [salary, setSalary] = useState('');
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    jobTitle: '',
+    salary: '',
+  });
+  
+console.log(form)
+  const schema = Yup.object().shape({
+    firstName: Yup.string().optional(),
+    lastName: Yup.string().optional(),
+    email: Yup.string().required().email(),
+    jobTitle: Yup.string().optional(),
+    salary: Yup.number().required(),
+  });
 
-  // const schema = Joi.object({
-  //   firstName: Joi.string().required().min(3),
-  //   lastName: Joi.string().required().min(3),
-  //   email: Joi.string().email().required(),
-  //   jobTitle: Joi.string().required().min(5),
-  //   salary: Joi.number().required().positive(),
-  // });
-  const validateSubmit  = () => {
-    const data = { firstName, lastName, email, jobTitle, salary };
-    props.navigation.navigate("EmployeeList", data);
+  
+  const validateSubmit = () => {
+    form.salary = Number(form.salary);
+    schema
+      .validate(form)
+      .then(() => {
+       props.navigation.navigate("EmployeeList", form);
+      })
+      .catch((err) => {
+        console.warn(err)
+      });
   };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Add New Employee</Text>
       <TextInput
-        style={styles.input}
+         style={styles.input}
         placeholder="First Name"
-        onChangeText={text => setFirstName(text)}
+        onChangeText={(value) => setForm({ ...form, firstName: value })}
+        value={form.firstName}
       />
       <TextInput
+        name="lastName"
         style={styles.input}
         placeholder="Last Name"
-        onChangeText={text => setLastName(text)}
+        onChangeText={(value) => setForm({ ...form, lastName: value })}
+        value={form.lastName}
       />
       <TextInput
+        name="email"
         style={styles.input}
         placeholder="Email"
-        onChangeText={text => setEmail(text)}
+        onChangeText={(value) => setForm({ ...form, email: value.trim() })}
+        value={form.email}
       />
       <TextInput
+        name="jobTitle"
         style={styles.input}
+        onChangeText={(value) => setForm({ ...form, jobTitle: value })}
         placeholder="Job Title"
-        onChangeText={text => setJobTitle(text)}
+        value={form.jobTitle}
         
       />
       <TextInput
+        name="salary"
         style={styles.input}
         placeholder="Salary"
-        onChangeText={text => setSalary(text)}
-      
+        onChangeText={(value) => setForm({ ...form, salary: value })}
+        value={form.salary}
       />
 
       <TouchableHighlight
