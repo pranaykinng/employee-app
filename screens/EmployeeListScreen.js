@@ -1,16 +1,34 @@
-import {View, Text, ScrollView, FlatList} from 'react-native';
-import React from 'react';
-
+import {View, Text,FlatList,TouchableHighlight} from 'react-native';
+import Avatar from 'react-native-elements/dist/avatar/Avatar';
+import { useState,useEffect } from 'react';
 const EmployeeListScreen = (props) => {
-const{firstName,lastName,email,salary,jobTitle}=props.route.params;
-const EmployeeList=[firstName,lastName,email,salary,jobTitle];
+const [employees, setEmployees] = useState([]);
+useEffect(() => {
+  setEmployees(...employees,[props.route.params]);
+},[props.route.params]);
   return (
-    <View style={{flex: 1, justifyContent: 'center'}}>
+    employees.length > 0 && (
+     <View>
       <FlatList 
-      data={EmployeeList}
-      renderItem={({item}) => <Text style>{item}</Text> } />
-    </View>
-  );
+      data={employees}
+      renderItem={({item}) => (
+        <View style={{flexDirection: 'row'}}>
+        <Avatar rounded size={68} title={`${(item.firstName[0]+item.lastName[0]).toUpperCase()}`} />
+       <Text>{item.firstName}</Text>
+      </View>
+      )
+    }
+    />
+          <TouchableHighlight
+        underlayColor="#eee"
+        onPress={() => props.navigation.navigate("AddEmployee")}
+      >
+        <Text style={{ color: '#010802', fontSize: 22 }}>Add Employee</Text>
+      </TouchableHighlight>
+
+  </View>
+  )
+  )
 };
 
 export default EmployeeListScreen;

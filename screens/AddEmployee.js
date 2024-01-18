@@ -17,7 +17,6 @@ function AddEmployee(props) {
     salary: '',
   });
   
-console.log(form)
   const schema = Yup.object().shape({
     firstName: Yup.string().optional(),
     lastName: Yup.string().optional(),
